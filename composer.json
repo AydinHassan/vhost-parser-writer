@@ -19,10 +19,10 @@
     },
     "autoload" : {
         "psr-4" : {
-            "AydinHassan\\VhostParserWriter\\": "src"
+            "AydinHassan\\VHostParserWriter\\": "src"
         }
     },
     "autoload-dev": {
-        "psr-4": { "AydinHassan\\VhostParserWriterTest\\": "test/" }
+        "psr-4": { "AydinHassan\\VHostParserWriterTest\\": "test/" }
     }
 }

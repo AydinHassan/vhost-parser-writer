@@ -2,6 +2,10 @@
 
 namespace AydinHassan\VHostParserWriterTest;
 
+use AydinHassan\VHostParserWriter\Directive\DocumentRoot;
+use AydinHassan\VHostParserWriter\Directive\ErrorLog;
+use AydinHassan\VHostParserWriter\Directive\ServerAdmin;
+use AydinHassan\VHostParserWriter\Directive\ServerName;
 use AydinHassan\VHostParserWriter\VHost;
 use AydinHassan\VHostParserWriter\Writer;
 
@@ -13,55 +17,41 @@ class WriterTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->vHost = new VHost();
-        $this->vHost->setIp("212.34.23.123");
-        $this->vHost->setPort(200);
-        $this->vHostWriter = new Writer($this->vHost);
+        $this->vHostWriter = new Writer();
     }
 
     public function testVhostWrite()
     {
-        $expected = "<VirtualHost 212.34.23.123:200>\n\n</VirtualHost>";
-        $this->assertSame($expected, $this->vHostWriter->write());
-    }
+        $vHost = new VHost();
+        $vHost->setIp("212.34.23.123");
+        $vHost->setPort(200);
 
-    public function testVhostWriteWithParams()
-    {
-        $expected = $this->stripIndent('
+        $expected = \AydinHassan\stripIndent('
         <VirtualHost 212.34.23.123:200>
 
         </VirtualHost>
         ');
-
-        $this->assertSame($expected, $this->vHostWriter->write());
+        $this->assertSame($expected, $this->vHostWriter->write($vHost));
     }
 
-
-    public function stripIndent($multiLineString)
+    public function testVhostWriteWithBasicDirectives()
     {
-        $lines = explode("\n", $multiLineString);
+        $vHost = new VHost();
+        $vHost->setIp("212.34.23.123");
+        $vHost->setPort(200);
+        $vHost->addDirective(new DocumentRoot("/www/example2"));
+        $vHost->addDirective(new ServerName("www.example.org"));
+        $vHost->addDirective(new ErrorLog("/var/log/log.txt"));
 
-        if (count($lines) < 1) {
-            return $multiLineString;
-        }
+        $expected = \AydinHassan\stripIndent('
+        <VirtualHost 212.34.23.123:200>
+            DocumentRoot /www/example2
+            ServerName www.example.org
+            ErrorLog /var/log/log.txt
 
-        $firstLine  = $lines[1];
-        $matches    = [];
-        preg_match('/\S/', $firstLine, $matches, PREG_OFFSET_CAPTURE);
-        $whiteSpaceCount = $matches[0][1];
+        </VirtualHost>
+        ');
 
-        $strippedLines = [];
-        for ($i = 0; $i < count($lines); $i++) {
-
-            if ($i === 0) {
-                continue;
-            }
-
-            $line               = $lines[$i];
-            $strippedLines[]    = substr($line, $whiteSpaceCount);
-        }
-
-        $return = rtrim(implode("\n", $strippedLines), "\n");
-        return $return;
+        $this->assertSame($expected, $this->vHostWriter->write($vHost));
     }
 }

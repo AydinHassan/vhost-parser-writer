@@ -6,7 +6,7 @@ namespace AydinHassan\VHostParserWriter\Directive;
  * Class IpWhiteList
  * @package AydinHassan\VHostParserWriter\Directive
  */
-class IpWhiteList
+class IpWhiteList implements DirectiveInterface
 {
     /**
      * @var string

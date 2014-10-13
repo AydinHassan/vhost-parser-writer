@@ -2,29 +2,21 @@
 
 namespace AydinHassan\VHostParserWriter;
 
+use AydinHassan\VHostParserWriter\Directive\DirectiveInterface;
 
 class VHost
 {
-    protected $configContainers = [];
+
+    /**
+     * @var DirectiveInterface[]
+     */
     protected $directives = [];
     protected $ip;
     protected $port;
 
-    public function getConfigContainers()
-    {
-        return $this->configContainers;
-    }
-
-    public function setConfigContainers(array $configContainers)
-    {
-        $this->configContainers = $configContainers;
-    }
-
-    public function addConfigContainer($configContainer)
-    {
-        $this->configContainers[] = $configContainer;
-    }
-
+    /**
+     * @return DirectiveInterface[]
+     */
     public function getDirectives()
     {
         return $this->directives;

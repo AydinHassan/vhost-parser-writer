@@ -1,6 +1,6 @@
 <?php
 
-namespace AydinHassan\VHostParserWriter\ConfigContainer;
+namespace AydinHassan\VHostParserWriter\Directive;
 
 /**
  * Interface ConfigContainerInterface
